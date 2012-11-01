@@ -139,15 +139,7 @@ body {
 }
 
 /* Slide styles */
-.slides.template-default > article:not(.nobackground):not(.biglogo) {
-  background: url(../images/google-logo-small.png) 710px 625px no-repeat;  
-  
-  background-color: white;  
-} 
-.slides.template-default article.biglogo {
-  background: white url(../images/google-logo.png) 50% 50% no-repeat;
-} 
-
+ 
 .slides.template-io2011 > article:not(.nobackground):not(.biglogo) {
   background: url(../images/colorbar.png) 0 600px repeat-x,
               url(../images/googleio-logo.png) 640px 625px no-repeat;

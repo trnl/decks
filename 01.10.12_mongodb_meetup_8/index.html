@@ -29,6 +29,11 @@
   
     background-color: white;  
   }   
+  .another q{
+    margin-top:30px;
+    font-size:30px !important;
+    margin-right:10px;
+  }
   .slides.template-meetup_8 article.biglogo {
     background: white url(images/meetup_8.png) 50% 50% no-repeat;
   } 
@@ -89,18 +94,9 @@
         </h3>
         <ul>
           <li>Why NoSQL?</li>
-          <li>Relational &amp; Aggregate Data Models</li>
+          <li>Aggregate Orientation</li>
           <li>Distribution Models</li>
-          <li>Consistency, Durability, CAP, ACID, BASE, WTF</li>
-          <li>Types of Database
-            <!-- <ul>
-                         <li>Key-value databases</li>                                        
-                         <li>Column-Family stores</li>                                                  
-                         <li>Document databases &amp; search engines</li>                                                            
-                         <li>Relational databases</li>                                                                      
-                         <li>Graph databases</li>
-                       </ul> -->
-          </li>
+          <li>CAP, ACID, BASE, WTF</li>
           <li>Polyglot persistance</li>          
         </ul>
       </article>   
@@ -139,18 +135,148 @@
           Chapter I: Why NoSQL?
         </div>           
       </article>   
+      <article class="smaller">
+        <q>
+          Three decades past, the relational empire conquered the hierarchical hegemony. Today,
+          an upstart challenges the relational empire's dominance, threatening the return of hierarchy.
+        </q>        
+        <div class='author'>
+          Philip Wadler, XML Databases Conference 2001
+        </div>
+        <div class='source'>
+          Chapter I: Why NoSQL?
+        </div>           
+      </article>         
+      <article class="smaller">
+        <h3>
+          Factor 1: Object-Relational Impedance Mismatch
+        </h3>        
+        <img class='centered' style='width: 100%;margin-top:5%;' src='images/impedance.jpeg'>
+        <!-- <iframe src='http://www.agiledata.org/essays/impedanceMismatch.html'></iframe>     -->
+      </article>
+      <article>
+        <h3>
+          Factor 2: Database is not an integation point anymore
+        </h3> 
+        <p>
+          <img class='centered' style='height: 500px' src='images/health-services_clip_image05.jpeg'>
+        </p>    
+        <div class='source'>
+          Chapter I: Why NoSQL?
+        </div>    
+      </article>    
+      <article>
+        <h3>
+          Factor 3: Clusters
+        </h3> 
+        <p>
+          <img class='centered' style='height: 500px' src='images/cluster.png'>          
+        </p>    
+        <div class='source'>
+          Chapter I: Why NoSQL?
+        </div>    
+      </article>             
       
-      <!-- Chapter II: Relational &amp; Aggregate Data Models -->
+      <!-- Chapter II: Aggregate Orientation -->
       <article>
         <h3>Chapter II</h3>
         <h1>
-          Relational &amp; Aggregate Data Models
+          Aggregate Orientation
         </h1>        
       </article> 
       <article class="smaller">
-        
+        <q>Aggregate is a cluster of associated objects that we treat as a unit for the purpose of data changes.</q>
+        <div class='author'>
+          Eric Evans, Domain Driven Design
+        </div>
         <div class='source'>
-          Chapter II: Relational &amp; Aggregate Data Models
+          Chapter II: Aggregate Orientation
+        </div>
+      </article>
+      <article class="smaller">
+        <h3>Data model for relational database</h3>
+        <p>
+          <img src="images/d1.png" style="width:100%;margin-top:20%" class="centered">
+        </p>   
+        <!-- yuml.me
+        [Customer|name]1-*[Order]
+        [Customer]1-*[Billing Address]
+        [Order]1-*[Order Payment|card number]
+        [Order]1-*[Order Item|price]
+        [Order]-shipping address[Address|street;city;state;post code]
+        [Order Item]*-1[Product|name]
+        [Order Payment]*-1[Billing Address]
+        [Address]1-*[Billing Address] -->     
+        <div class='source'>
+          Chapter II: Aggregate Orientation
+        </div>
+      </article>
+      <article class="smaller">
+        <h3>An aggregate data model</h3>
+        <p>
+          <img src="images/d2.png" style="width:100%;margin-top:20%" class="centered">
+        </p>        
+        <!--  yuml.me
+            [Customer|name]1-.-*[Order]
+            [Customer]++-billingAddress[Address]
+            [Order]++-[Payment|card number]
+            [Order]++-*[Order Item|price]
+            [Order]++-shipping address[Address|street;city;state;post code]
+            [Order Item]*-.-1[Product|name]
+            [Payment]++-billingAddress[Address] -->
+        <div class='source'>
+          Chapter II: Aggregate Orientation
+        </div>
+      </article>
+      <article class="smaller">
+        <h3>An aggregate data model</h3>
+        <pre>
+//customers<br/>{<br/>  &quot;id&quot;:1,<br/>  &quot;name&quot;:&quot;Vova&quot;,<br/>  &quot;billingAddress&quot;:{&quot;city&quot;:&quot;Minsk&quot;}<br/>}<br/><br/>//orders<br/>{<br/>  &quot;id&quot;:99,<br/>  &quot;customerId&quot;:1,<br/>  &quot;orderItems&quot;:[{<br/>    &quot;productId&quot;: 84,<br/>    &quot;productName&quot; : &quot;Connected&quot;,<br/>    &quot;price&quot;:30.23<br/>    }<br/>  ],<br/>  &quot;shippingAddress&quot;:{&quot;city&quot;:&quot;Minsk&quot;}<br/>  &quot;payment&quot;:{<br/>    &quot;cardNumber&quot;:&quot;0000-0000-0000-0000&quot;,<br/>    &quot;billingAddress&quot;:{&quot;city&quot;:&quot;Minsk&quot;}    <br/>  }<br/>}          
+        </pre>
+        <!-- //customers
+                {
+                  "id":1,
+                  "name":"Vova",
+                  "billingAddress":{"city":"Minsk"}
+                }
+        
+                //orders
+                {
+                  "id":99,
+                  "customerId":1,
+                  "orderItems":[{
+                    "productId": 84,
+                    "productName" : "Connected",
+                    "price":30.23
+                    }
+                  ],
+                  "shippingAddress":{"city":"Minsk"}
+                  "payment":{
+                    "cardNumber":"0000-0000-0000-0000",
+                    "billingAddress":{"city":"Minsk"}    
+                  }
+                }     -->
+        <div class='source'>
+          Chapter II: Aggregate Orientation
+        </div>
+      </article>      
+      <article>
+        <h3 class="green">Aggregate oriented database types</h3>
+        <ul>
+          <li>Key Value / Tuple Store</li>
+          <li>Wide Column Store / Column Families</li>          
+          <li>Document Store</li>                    
+                                    
+        </ul>
+        <br/>
+        <br/>        
+        <h3 class="blue">Aggregate ignorant database types</h3>
+        <ul>
+          <li>Relational Databases</li>    
+          <li>Graph Databases</li>    
+        </ul>
+        <div class='source'>
+          Chapter II: Aggregate Orientation
         </div>
       </article>
       
@@ -161,54 +287,162 @@
           Distribution Models
         </h1>        
       </article> 
-      <article class="smaller">
-        
+      <article>
+        <h3>Techniques for data distribution</h3>
+        <ul>
+          <li>Single-Server*</li>          
+          <li>Sharding</li>          
+          <li>Master-slave replication</li>          
+          <li>Peer-to-peer replication</li>
+          <li>Sharding + Replication</li>          
+        </ul>
         <div class='source'>
           Chapter III: Distribution Models
         </div>
       </article>
+      <article>
+        <h3>Single-Server</h3>
+        <q>You don’t want to distribute your data!</q>
+        <div class='author'>
+          Chinese Proverb
+        </div>
+        <div class='source'>
+          Chapter III: Distribution Models
+        </div>
+      </article>   
+      <article>
+        <h3>Sharding</h3>
+        <p>
+          <img src="images/ShardDiagram-4.jpeg" style="margin-top:15%;width:100%" class="centered">
+        </p>
+        <div class='source'>
+          Chapter III: Distribution Models
+        </div>
+      </article>   
+      <article>
+        <h3>Types of sharding</h3>
+        <ul>
+          <li>Partitioning by Application Function</li>
+          <li>Sharding by hash or key</li>
+          <li>Sharding via a Lookup Service</li>          
+        </ul>
+        <div class='source'>
+          Chapter III: Distribution Models
+        </div>
+      </article>      
+      <article>
+        <h3>Replication</h3>
+        <p>
+          <img class="centered" style="height:80%" src="images/replication.png">          
+        </p>
+        <div class='source'>
+          Chapter III: Distribution Models
+        </div>
+      </article>      
+      <article>
+        <h3>Combining Sharding + Replication</h3>
+        <p>
+          <img class="centered" style="height:80%" src="images/cassa.png">          
+        </p>
+        <div class='source'>
+          Chapter III: Distribution Models
+        </div>
+      </article>    
       
-      <!-- Chapter IV: Consistency, Durability, CAP, ACID, BASE -->
+      <!-- Chapter IV: CAP, ACID, BASE -->
       <article>
         <h3>Chapter IV</h3>
         <h1>
-          Consistency, Durability, CAP, ACID, BASE
+          CAP, ACID, BASE
         </h1>        
       </article> 
-      <article class="smaller">
-        
+      <article>
+        <h3>CAP Theorem</h3>
+        <p>
+          <img class="centered" style="width:100%" src="images/cap.svg">
+        </p>
         <div class='source'>
-          Chapter IV: Consistency, Durability, CAP, ACID, BASE
+          Chapter IV: CAP, ACID, BASE
         </div>
       </article>
-
-      <!-- Chapter V. Types of Database  -->
+      <article class="smaller">
+        <h3>CAP Theorem</h3>
+        <q>Given the 3 properties of Consistency, Availability and Partition tolerance, you can get only 2.</q>
+        <q class="build"><span>However, </span><span>it depends on how you define this 3 properties.</span></q>        
+        <div class='source'>
+          Chapter IV: CAP, ACID, BASE
+        </div>
+      </article>
+      <article class="smaller another">
+        <h3>
+        Consistency  
+        </h3>
+        <q>Consistency is that when a transaction is taking place on a database item, then access to it should not be allowed to other users during that transaction.</q>
+        <q>Consistency states that only valid data will be written to the database.</q>
+        <q>Data consistency summarizes the validity, accuracy, usability and integrity of related data between applications and across the IT enterprise.</q>
+        <div class='source'>  
+          Chapter IV: CAP, ACID, BASE
+        </div>
+      </article>
       <article>
-        <h3>Chapter V</h3>
-        <h1>
-          Types of Database
-        </h1>        
+        <h3>
+          Let's try once again...
+        </h3>
+        <ul>
+          <li><span class="green">Logical consistency</span> - ensuring that different data items make sense together.</li>
+          <li><span class="green">Replication consistency</span> - ensuring that same data item has same value when read from different replicas.</li>
+        </ul>
+        <div class='source'>  
+          Chapter IV: CAP, ACID, BASE
+        </div>
+      </article>  
+      <article>
+        <h3>
+          Partition Tolerance
+        </h3>
+        <p>
+          <img class="centered" style="width:100%; margin-top:7%" src="images/pt.png">
+        </p>        
+        <div class='source'>  
+          Chapter IV: CAP, ACID, BASE
+        </div>
+      </article>    
+      <article class="smaller">
+        <h3>Availability</h3>
+        <q style="margin-top:30px">Every request received by a nonfailing node in the system must result in response.</q>
+        <div class='author'>
+          Lynch Nancy, Seth Gilbert 
+        </div>
+        <q style="margin-top:50px">A guarantee that every request receives a response about whether it was successful or failed.</q>
+        <div class='author'>
+          Wikipedia
+        </div>        
+        <div class='source'>
+          Chapter IV: CAP, ACID, BASE
+        </div>
       </article> 
       <article class="smaller">
-        
+        <q>In a system, that may suffer partitions, as a distributed system do, you have to trade off consistency versus availability</q>
+        <div class='author'>
+          Martin Fowler
+        </div>      
         <div class='source'>
-          Chapter V: Types of Database
+          Chapter IV: CAP, ACID, BASE
         </div>
-      </article>      
+      </article>             
 
-      <!-- Chapter VI. Polyglot persistance -->
+      <!-- Chapter V. Polyglot persistance -->
       <article>
-        <h3>Chapter VI</h3>
+        <h3>Chapter V</h3>
         <h1>
           Polyglot persistance
         </h1>        
       </article> 
-      <article class="smaller">        
-        <div class='source'>
-          Chapter VI. Polyglot persistance
-        </div>
+      <article class='fill'>      
+        <p>
+          <img src="images/plolyglotpersistence.png" style="height:80%;">
+        </p>  
       </article>      
-
       
       <!-- Thank you -->
       <article>
@@ -218,6 +452,7 @@
         <p>
         <h3><a href='http://on.fb.me/bymongo'>on.fb.me/bymongo</a></h3>
         </p>
+        
       </article>
 
     </section>
